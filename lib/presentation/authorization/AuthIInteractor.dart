@@ -1,5 +1,6 @@
 import '../../MVP/MVPIInteractor.dart';
 
-abstract class AuthIInteractor implements MVPIInteractor{
+class AuthIInteractor implements MVPIInteractor{
+
 
 }
