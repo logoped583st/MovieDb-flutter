@@ -4,4 +4,5 @@ abstract class AuthView implements MVPIView {
   void authSuccess();
 
   void authError();
+
 }

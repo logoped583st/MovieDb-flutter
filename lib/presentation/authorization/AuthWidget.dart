@@ -4,9 +4,14 @@ import 'AuthPresenter.dart';
 import 'AuthView.dart';
 
 class Authorization extends StatelessWidget implements AuthView {
-  Authorization({Key key}) : super(key: key) {
-    AuthPresenter authPresenter = new AuthPresenter(this);
+
+  AuthPresenter _presenter;
+
+  Authorization({Key key}) :super() {
+    _presenter = new AuthPresenter(this);
   }
+
+  TextFormField _email;
 
   final _logo = Hero(
     tag: 'hero',
@@ -17,18 +22,29 @@ class Authorization extends StatelessWidget implements AuthView {
   );
 
   final FocusNode _passwordFocus = new FocusNode();
+  final FocusNode _emailFocus = new FocusNode();
 
   @override
   Widget build(BuildContext context) {
-    final _email = TextFormField(
+    
+    _presenter.checkFocus(_emailFocus);
+    _email = TextFormField(
       keyboardType: TextInputType.emailAddress,
       autofocus: false,
+      focusNode: _emailFocus,
       textInputAction: TextInputAction.next,
+      autovalidate: true,
+      validator: ((value){
+        if(!_presenter.checkRegular(value) && !_emailFocus.hasFocus) {
+          return "PIZDA";
+        }
+      }),
       onFieldSubmitted: (String string) {
         FocusScope.of(context).requestFocus(_passwordFocus);
       },
       decoration: InputDecoration(
         hintText: 'Email',
+        errorText: null,
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
       ),
@@ -38,6 +54,7 @@ class Authorization extends StatelessWidget implements AuthView {
       autofocus: false,
       obscureText: true,
       focusNode: _passwordFocus,
+      autovalidate: true,
       decoration: InputDecoration(
         hintText: 'Password',
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
@@ -97,10 +114,13 @@ class Authorization extends StatelessWidget implements AuthView {
   }
 
   @override
-  void authError() {}
+  void authError() {
+
+  }
 
   @override
   void authSuccess() {}
+
 }
 
 class MyBehavior extends ScrollBehavior {
