@@ -10,7 +10,7 @@ class AuthPresenter extends MVPPresenter<AuthView, AuthInteractor>
     implements AuthIInteractor {
 
   final RegExp emailRegex = RegExp(pattern);
-  bool isInFocus = false;
+  bool isValid = true;
 
   AuthPresenter(AuthView authView) : super(authView);
 
@@ -20,11 +20,13 @@ class AuthPresenter extends MVPPresenter<AuthView, AuthInteractor>
   }
 
   void checkFocus(FocusNode focus) {
-
+    focus.addListener(() {
+      isValid = focus.hasFocus;
+      getView().focusEmailChanged(isValid);
+    });
   }
 
   bool checkRegular(String email) {
-
     return RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email);
   }
 

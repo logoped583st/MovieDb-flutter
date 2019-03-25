@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
         accentColor: Colors.redAccent,
         fontFamily: 'Montserrat',
       ),
-      home: Authorization(),
+      home: MyHomePage(),
     );
   }
 }

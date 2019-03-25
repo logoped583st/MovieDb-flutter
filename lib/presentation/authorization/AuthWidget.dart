@@ -3,11 +3,17 @@ import 'package:flutter/material.dart';
 import 'AuthPresenter.dart';
 import 'AuthView.dart';
 
-class Authorization extends StatelessWidget implements AuthView {
+class MyHomePage extends StatefulWidget {
+  @override
+  Authorization createState() {
+    return new Authorization();
+  }
+}
 
+class Authorization extends State<MyHomePage> implements AuthView {
   AuthPresenter _presenter;
 
-  Authorization({Key key}) :super() {
+  Authorization({Key key}) : super() {
     _presenter = new AuthPresenter(this);
   }
 
@@ -26,17 +32,17 @@ class Authorization extends StatelessWidget implements AuthView {
 
   @override
   Widget build(BuildContext context) {
-    
     _presenter.checkFocus(_emailFocus);
+
     _email = TextFormField(
       keyboardType: TextInputType.emailAddress,
       autofocus: false,
       focusNode: _emailFocus,
       textInputAction: TextInputAction.next,
       autovalidate: true,
-      validator: ((value){
-        if(!_presenter.checkRegular(value) && !_emailFocus.hasFocus) {
-          return "PIZDA";
+      validator: ((value) {
+        if (!_presenter.checkRegular(value) && !_presenter.isValid) {
+          return "Email is invalid";
         }
       }),
       onFieldSubmitted: (String string) {
@@ -44,7 +50,7 @@ class Authorization extends StatelessWidget implements AuthView {
       },
       decoration: InputDecoration(
         hintText: 'Email',
-        errorText: null,
+        // errorText: !_presenter.isInFocus ? "Invalid email" : null,
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
       ),
@@ -53,6 +59,7 @@ class Authorization extends StatelessWidget implements AuthView {
     final _password = TextFormField(
       autofocus: false,
       obscureText: true,
+      maxLines: 1,
       focusNode: _passwordFocus,
       autovalidate: true,
       decoration: InputDecoration(
@@ -93,34 +100,38 @@ class Authorization extends StatelessWidget implements AuthView {
     );
 
     return Scaffold(
-      appBar: AppBar(),
-      body: Center(
-        child:ScrollConfiguration(behavior: MyBehavior(), child: ListView(
-          shrinkWrap: true,
-          padding: EdgeInsets.only(left: 24.0, right: 24.0),
-          children: <Widget>[
-            _logo,
-            SizedBox(height: 48.0),
-            _email,
-            SizedBox(height: 8.0),
-            _password,
-            SizedBox(height: 24.0),
-            _loginButton,
-            _guestLoginButton
-          ],
-        ),
-      ),
-    ));
+        appBar: AppBar(),
+        body: Center(
+          child: ScrollConfiguration(
+            behavior: MyBehavior(),
+            child: ListView(
+              shrinkWrap: true,
+              padding: EdgeInsets.only(left: 24.0, right: 24.0),
+              children: <Widget>[
+                _logo,
+                SizedBox(height: 48.0),
+                _email,
+                SizedBox(height: 8.0),
+                _password,
+                SizedBox(height: 24.0),
+                _loginButton,
+                _guestLoginButton
+              ],
+            ),
+          ),
+        ));
   }
 
   @override
-  void authError() {
-
-  }
+  void authError() {}
 
   @override
   void authSuccess() {}
 
+  @override
+  void focusEmailChanged(bool isFocusable) {
+    setState(() {});
+  }
 }
 
 class MyBehavior extends ScrollBehavior {
