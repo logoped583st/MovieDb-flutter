@@ -11,7 +11,6 @@ class AuthInteractor extends MVPInteractor {
   AuthInteractor(AuthPresenter presenter) : super(presenter){
     _interactor = presenter;
     _authRep = new Auth();
-    _authRep.createGuestSession();
   }
 
 
