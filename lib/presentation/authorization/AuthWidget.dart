@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'AuthPresenter.dart';
 import 'AuthView.dart';
+
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -11,11 +12,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class Authorization extends State<MyHomePage> implements AuthView {
-  AuthPresenter _presenter;
 
-  Authorization({Key key}) : super() {
-    _presenter = new AuthPresenter(this);
-  }
+  AuthPresenter _presenter;
 
   TextFormField _email;
 
@@ -26,6 +24,13 @@ class Authorization extends State<MyHomePage> implements AuthView {
       child: Image.asset('images/login.png'),
     ),
   );
+
+
+  @override
+  void initState() {
+    super.initState();
+    _presenter = new AuthPresenter(this);
+  }
 
   final FocusNode _passwordFocus = new FocusNode();
   final FocusNode _emailFocus = new FocusNode();
@@ -39,20 +44,14 @@ class Authorization extends State<MyHomePage> implements AuthView {
       autofocus: false,
       focusNode: _emailFocus,
       textInputAction: TextInputAction.next,
-      autovalidate: true,
-      validator: ((value) {
-        if (!_presenter.checkRegular(value) && !_presenter.isValid) {
-          return "Email is invalid";
-        }
-      }),
       onFieldSubmitted: (String string) {
         FocusScope.of(context).requestFocus(_passwordFocus);
       },
       decoration: InputDecoration(
-        hintText: 'Email',
-        // errorText: !_presenter.isInFocus ? "Invalid email" : null,
+        hintText: 'Login',
+        prefixIcon: Icon(MdiIcons.ninja),
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
+        border: OutlineInputBorder(),
       ),
     );
 
@@ -64,8 +63,9 @@ class Authorization extends State<MyHomePage> implements AuthView {
       autovalidate: true,
       decoration: InputDecoration(
         hintText: 'Password',
+        prefixIcon: Icon(MdiIcons.security),
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
+        border: OutlineInputBorder(),
       ),
     );
 
@@ -111,7 +111,7 @@ class Authorization extends State<MyHomePage> implements AuthView {
                 _logo,
                 SizedBox(height: 48.0),
                 _email,
-                SizedBox(height: 8.0),
+                SizedBox(height: 16.0),
                 _password,
                 SizedBox(height: 24.0),
                 _loginButton,
