@@ -13,6 +13,8 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.dark,
         primaryColor: Colors.black,
         accentColor: Colors.redAccent,
+        disabledColor: Colors.grey[400],
+        buttonColor: Colors.white,
         fontFamily: 'Montserrat',
       ),
       home: MyHomePage(),

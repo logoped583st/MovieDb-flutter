@@ -5,6 +5,6 @@ abstract class AuthView implements MVPIView {
 
   void authError();
 
-  void focusEmailChanged(bool isFocusable);
+  void enableButton(bool isEnabled);
 
 }

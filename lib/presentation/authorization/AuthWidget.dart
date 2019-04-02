@@ -3,7 +3,6 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'AuthPresenter.dart';
 import 'AuthView.dart';
 
-
 class MyHomePage extends StatefulWidget {
   @override
   Authorization createState() {
@@ -14,8 +13,11 @@ class MyHomePage extends StatefulWidget {
 class Authorization extends State<MyHomePage> implements AuthView {
 
   AuthPresenter _presenter;
-
-  TextFormField _email;
+  bool _buttonEnabled = false;
+  final FocusNode _passwordFocus = new FocusNode();
+  final FocusNode _emailFocus = new FocusNode();
+  final TextEditingController _loginTextController = TextEditingController();
+  final TextEditingController _passwordTextController = TextEditingController();
 
   final _logo = Hero(
     tag: 'hero',
@@ -30,16 +32,26 @@ class Authorization extends State<MyHomePage> implements AuthView {
   void initState() {
     super.initState();
     _presenter = new AuthPresenter(this);
+    _presenter.validateInputs(_loginTextController,_passwordTextController);
   }
 
-  final FocusNode _passwordFocus = new FocusNode();
-  final FocusNode _emailFocus = new FocusNode();
+
+
+  @override
+  void dispose() {
+    _passwordFocus.dispose();
+    _emailFocus.dispose();
+    _presenter.presenterDestroy();
+    _loginTextController.dispose();
+    _passwordTextController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    _presenter.checkFocus(_emailFocus);
 
-    _email = TextFormField(
+    final _login = TextFormField(
+      controller: _loginTextController,
       keyboardType: TextInputType.emailAddress,
       autofocus: false,
       focusNode: _emailFocus,
@@ -59,6 +71,7 @@ class Authorization extends State<MyHomePage> implements AuthView {
       autofocus: false,
       obscureText: true,
       maxLines: 1,
+      controller: _passwordTextController,
       focusNode: _passwordFocus,
       autovalidate: true,
       decoration: InputDecoration(
@@ -69,23 +82,24 @@ class Authorization extends State<MyHomePage> implements AuthView {
       ),
     );
 
-    final _loginButton = Container(
+    final _loginContainer = Container(
       padding: EdgeInsets.symmetric(vertical: 8.0),
       child: RaisedButton(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(24),
         ),
-        onPressed: () {
-          //Navigator.of(context).pushNamed(HomePage.tag);
-        },
+        onPressed: !_buttonEnabled
+            ? null
+            : () {
+                //Navigator.of(context).pushNamed(HomePage.tag);
+              },
         padding: EdgeInsets.all(12),
         colorBrightness: Brightness.light,
-        color: Colors.white,
         child: Text('Log In', style: TextStyle(color: Colors.redAccent)),
       ),
     );
 
-    final _guestLoginButton = RaisedButton(
+    final _guestLoginContainer = RaisedButton(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(24),
       ),
@@ -94,7 +108,6 @@ class Authorization extends State<MyHomePage> implements AuthView {
       },
       padding: EdgeInsets.all(12),
       colorBrightness: Brightness.light,
-      color: Colors.white,
       child: Text('Start guest session',
           style: TextStyle(color: Colors.redAccent)),
     );
@@ -110,12 +123,12 @@ class Authorization extends State<MyHomePage> implements AuthView {
               children: <Widget>[
                 _logo,
                 SizedBox(height: 48.0),
-                _email,
+                _login,
                 SizedBox(height: 16.0),
                 _password,
                 SizedBox(height: 24.0),
-                _loginButton,
-                _guestLoginButton
+                _loginContainer,
+                _guestLoginContainer
               ],
             ),
           ),
@@ -129,8 +142,11 @@ class Authorization extends State<MyHomePage> implements AuthView {
   void authSuccess() {}
 
   @override
-  void focusEmailChanged(bool isFocusable) {
-    setState(() {});
+  void enableButton(bool isEnabled) {
+    debugPrint(isEnabled.toString());
+    setState(() {
+      _buttonEnabled = isEnabled;
+    });
   }
 }
 

@@ -15,7 +15,7 @@ abstract class MVPPresenter<V extends MVPIView, T extends MVPInteractor>
 
   T createInteractor();
 
-  void _presenterDestroy() {
+  void presenterDestroy() {
     _baseView = null;
   }
 

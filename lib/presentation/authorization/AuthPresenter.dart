@@ -8,7 +8,6 @@ import 'AuthView.dart';
 
 class AuthPresenter extends MVPPresenter<AuthView, AuthInteractor>
     implements AuthIInteractor {
-
   final RegExp emailRegex = RegExp(pattern);
   bool isValid = true;
 
@@ -19,15 +18,20 @@ class AuthPresenter extends MVPPresenter<AuthView, AuthInteractor>
     return AuthInteractor(this);
   }
 
-  void checkFocus(FocusNode focus) {
-    focus.addListener(() {
-      isValid = focus.hasFocus;
-      getView().focusEmailChanged(isValid);
+  void validateInputs(TextEditingController login, TextEditingController password) {
+    login.addListener(() {
+      getView().enableButton(login.text.isNotEmpty && password.text.isNotEmpty);
+      debugPrint(login.text + password.text);
+
+    });
+
+    password.addListener(() {
+      debugPrint(login.text + password.text);
+      getView().enableButton(login.text.isNotEmpty && password.text.isNotEmpty);
     });
   }
 
   bool checkRegular(String email) {
     return RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email);
   }
-
 }
