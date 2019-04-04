@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:http/http.dart';
 import 'package:flutter/foundation.dart';
+import '../networking/errors/Errors.dart';
 
 const String _apiKey = "8a804ccd6e2b680e77ab60f86dc27bb6";
 
@@ -15,7 +16,6 @@ Future<Response> baseGet(String url,
     {Map<String, String> headers: const {},
     String authToken: "",
     Map<String, String> query: const {}}) async {
-
   if (authToken.isNotEmpty) {
     headers.addAll({HttpHeaders.authorizationHeader: authToken});
   }
@@ -29,7 +29,13 @@ Future<Response> baseGet(String url,
   );
   httpLog(response);
 
-  return response;
+  if (response.statusCode == 200) {
+    // If server returns an OK response, parse the JSON
+    return response;
+  } else {
+    // If that response was not OK, throw an error.
+    throw getError(response.statusCode);
+  }
 }
 
 Future<Response> basePost(String url,
@@ -49,9 +55,15 @@ Future<Response> basePost(String url,
     body: body,
   );
 
-  httpLog(response,body: body);
+  httpLog(response, body: body);
 
-  return response;
+  if (response.statusCode == 200) {
+    // If server returns an OK response, parse the JSON
+    return response;
+  } else {
+    // If that response was not OK, throw an error.
+    throw getError(response.statusCode);
+  }
 }
 
 void httpLog(Response response, {dynamic body}) {

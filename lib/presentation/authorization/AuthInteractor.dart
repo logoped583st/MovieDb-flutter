@@ -1,7 +1,10 @@
 import '../../MVP/MVPInteractor.dart';
 import 'AuthPresenter.dart';
 import 'AuthIInteractor.dart';
-import '../../networking/AuthApi.dart';
+import '../../pojo/AuthResponse.dart';
+import '../../pojo/SesionResponse.dart';
+
+import 'package:logopeds_movies/networking/repository/AuthApi.dart';
 
 class AuthInteractor extends MVPInteractor {
 
@@ -11,6 +14,25 @@ class AuthInteractor extends MVPInteractor {
   AuthInteractor(AuthPresenter presenter) : super(presenter){
     _interactor = presenter;
     _authRep = new Auth();
+  }
+
+
+  void loginWithLogin(String login, String password) async {
+    try {
+      RequestToken requestToken = await _authRep.signIn(login, password);
+      _interactor.signInSuccess(requestToken);
+    }catch (error){
+
+    }
+  }
+
+  void guestLogin() async {
+    try {
+      SessionResponse sessionResponse = await _authRep.createGuestSession();
+      _interactor.guestSessionSuccess(sessionResponse);
+    }catch (error){
+
+    }
   }
 
 

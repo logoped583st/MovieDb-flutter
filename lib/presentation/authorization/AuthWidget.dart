@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:logopeds_movies/presentation/popularmovies/PopularMoviesWidget.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'AuthPresenter.dart';
 import 'AuthView.dart';
@@ -11,13 +12,12 @@ class MyHomePage extends StatefulWidget {
 }
 
 class Authorization extends State<MyHomePage> implements AuthView {
-
   AuthPresenter _presenter;
-  bool _buttonEnabled = false;
   final FocusNode _passwordFocus = new FocusNode();
   final FocusNode _emailFocus = new FocusNode();
   final TextEditingController _loginTextController = TextEditingController();
   final TextEditingController _passwordTextController = TextEditingController();
+  final CircularProgressIndicator _progressIndicator = CircularProgressIndicator();
 
   final _logo = Hero(
     tag: 'hero',
@@ -27,15 +27,12 @@ class Authorization extends State<MyHomePage> implements AuthView {
     ),
   );
 
-
   @override
   void initState() {
     super.initState();
     _presenter = new AuthPresenter(this);
-    _presenter.validateInputs(_loginTextController,_passwordTextController);
+    _presenter.validateInputs(_loginTextController, _passwordTextController);
   }
-
-
 
   @override
   void dispose() {
@@ -49,7 +46,6 @@ class Authorization extends State<MyHomePage> implements AuthView {
 
   @override
   Widget build(BuildContext context) {
-
     final _login = TextFormField(
       controller: _loginTextController,
       keyboardType: TextInputType.emailAddress,
@@ -88,7 +84,7 @@ class Authorization extends State<MyHomePage> implements AuthView {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(24),
         ),
-        onPressed: !_buttonEnabled
+        onPressed: !_presenter.isButtonEnabled()
             ? null
             : () {
                 //Navigator.of(context).pushNamed(HomePage.tag);
@@ -104,7 +100,13 @@ class Authorization extends State<MyHomePage> implements AuthView {
         borderRadius: BorderRadius.circular(24),
       ),
       onPressed: () {
-        //Navigator.of(context).pushNamed(HomePage.tag);
+        _presenter.guestLogin();
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return Center(child:CircularProgressIndicator());
+            });
+
       },
       padding: EdgeInsets.all(12),
       colorBrightness: Brightness.light,
@@ -139,14 +141,14 @@ class Authorization extends State<MyHomePage> implements AuthView {
   void authError() {}
 
   @override
-  void authSuccess() {}
+  void authSuccess() {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => PopularMoviesPage()));
+  }
 
   @override
-  void enableButton(bool isEnabled) {
-    debugPrint(isEnabled.toString());
-    setState(() {
-      _buttonEnabled = isEnabled;
-    });
+  void updateState() {
+    setState(() {});
   }
 }
 

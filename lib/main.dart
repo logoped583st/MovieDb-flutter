@@ -1,6 +1,6 @@
-
 import 'package:flutter/material.dart';
 import 'presentation/authorization/AuthWidget.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -17,8 +17,7 @@ class MyApp extends StatelessWidget {
         buttonColor: Colors.white,
         fontFamily: 'Montserrat',
       ),
-      home: MyHomePage(),
+      home: Scaffold(body: MyHomePage()),
     );
   }
 }
-
