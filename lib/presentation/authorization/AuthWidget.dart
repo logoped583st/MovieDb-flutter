@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:logopeds_movies/presentation/CustomProgress.dart';
 import 'package:logopeds_movies/presentation/popularmovies/PopularMoviesWidget.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'AuthPresenter.dart';
@@ -17,7 +18,7 @@ class Authorization extends State<MyHomePage> implements AuthView {
   final FocusNode _emailFocus = new FocusNode();
   final TextEditingController _loginTextController = TextEditingController();
   final TextEditingController _passwordTextController = TextEditingController();
-  final CircularProgressIndicator _progressIndicator = CircularProgressIndicator();
+  WillPopScope popScope;
 
   final _logo = Hero(
     tag: 'hero',
@@ -51,6 +52,10 @@ class Authorization extends State<MyHomePage> implements AuthView {
       keyboardType: TextInputType.emailAddress,
       autofocus: false,
       focusNode: _emailFocus,
+      autovalidate: true,
+      validator: (value) {
+        return !_presenter.getLoginOrPasswordIncorrect() ? null : '';
+      },
       textInputAction: TextInputAction.next,
       onFieldSubmitted: (String string) {
         FocusScope.of(context).requestFocus(_passwordFocus);
@@ -70,6 +75,11 @@ class Authorization extends State<MyHomePage> implements AuthView {
       controller: _passwordTextController,
       focusNode: _passwordFocus,
       autovalidate: true,
+      validator: (value) {
+        return !_presenter.getLoginOrPasswordIncorrect()
+            ? null
+            : 'Login or password incorrect';
+      },
       decoration: InputDecoration(
         hintText: 'Password',
         prefixIcon: Icon(MdiIcons.security),
@@ -87,7 +97,7 @@ class Authorization extends State<MyHomePage> implements AuthView {
         onPressed: !_presenter.isButtonEnabled()
             ? null
             : () {
-                //Navigator.of(context).pushNamed(HomePage.tag);
+                _presenter.signInWithLogin();
               },
         padding: EdgeInsets.all(12),
         colorBrightness: Brightness.light,
@@ -102,11 +112,12 @@ class Authorization extends State<MyHomePage> implements AuthView {
       onPressed: () {
         _presenter.guestLogin();
         showDialog(
+            barrierDismissible: false,
             context: context,
             builder: (BuildContext context) {
-              return Center(child:CircularProgressIndicator());
+              return WillPopScope(
+                  child: Center(child: CustomProgress()), onWillPop: () {},);
             });
-
       },
       padding: EdgeInsets.all(12),
       colorBrightness: Brightness.light,
@@ -142,7 +153,8 @@ class Authorization extends State<MyHomePage> implements AuthView {
 
   @override
   void authSuccess() {
-    Navigator.push(
+    Navigator.pop(context);
+    Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => PopularMoviesPage()));
   }
 

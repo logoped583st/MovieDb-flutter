@@ -18,6 +18,10 @@ class AuthPresenter extends MVPPresenter<AuthView, AuthInteractor>
 
   String _password;
 
+  bool _loginOrPasswordIncorrect = false;
+
+  getLoginOrPasswordIncorrect() => _loginOrPasswordIncorrect;
+
   @override
   AuthInteractor createInteractor() {
     return AuthInteractor(this);
@@ -27,17 +31,19 @@ class AuthPresenter extends MVPPresenter<AuthView, AuthInteractor>
 
   bool isButtonEnabled() => _buttonEnabled;
 
-  void validateInputs(
-      TextEditingController login, TextEditingController password) {
+  void validateInputs(TextEditingController login,
+      TextEditingController password) {
     login.addListener(() {
       _buttonEnabled = login.text.isNotEmpty && password.text.isNotEmpty;
       _login = login.text;
+      _loginOrPasswordIncorrect = false;
       getView().updateState();
     });
 
     password.addListener(() {
       _buttonEnabled = login.text.isNotEmpty && password.text.isNotEmpty;
       _password = password.text;
+      _loginOrPasswordIncorrect = false;
       getView().updateState();
     });
   }
@@ -46,7 +52,7 @@ class AuthPresenter extends MVPPresenter<AuthView, AuthInteractor>
     getInteractor().loginWithLogin(_login, _password);
   }
 
-  void guestLogin(){
+  void guestLogin() {
     getInteractor().guestLogin();
   }
 
@@ -62,5 +68,11 @@ class AuthPresenter extends MVPPresenter<AuthView, AuthInteractor>
   @override
   void guestSessionSuccess(SessionResponse sessionResponse) {
     getView().authSuccess();
+  }
+
+  @override
+  void incorrectLoginOrPassword() {
+    _loginOrPasswordIncorrect = true;
+    getView().updateState();
   }
 }

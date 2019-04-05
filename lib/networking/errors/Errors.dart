@@ -1,31 +1,31 @@
 import 'ErrorMessage.dart';
 
-class NotAuthorized extends Error implements ErrorMessage {
+class NotAuthorized implements Exception, ErrorMessage {
   @override
   String getErrorMessage(int errorCode) {
     return "User not authorized";
   }
 }
 
-class NotFound extends Error implements ErrorMessage {
+class NotFound implements Exception, ErrorMessage {
   @override
   String getErrorMessage(int errorCode) {
     return "Not found";
   }
 }
 
-Error getError(int errorCode) {
+Exception getError(int errorCode) {
   switch (ErrorCodes._internal(errorCode)) {
     case ErrorCodes.NOT_AUTHORIZED:
       return NotAuthorized();
     case ErrorCodes.INTERNAL_SERVER_ERROR:
-      return Error();
+      return Exception();
 
     case ErrorCodes.NOT_FOUND:
       return NotFound();
 
     default:
-      return Error();
+      return Exception();
   }
 }
 

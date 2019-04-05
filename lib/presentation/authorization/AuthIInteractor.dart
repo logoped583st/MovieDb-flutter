@@ -8,4 +8,6 @@ abstract class AuthIInteractor implements MVPIInteractor{
 
   void guestSessionSuccess(SessionResponse sessionResponse);
 
+  void incorrectLoginOrPassword();
+
 }
