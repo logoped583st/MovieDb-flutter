@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:logopeds_movies/presentation/popularmovies/PopularMoviesPresenter.dart';
+import 'package:logopeds_movies/presentation/popularmovies/PopularMoviesView.dart';
 
 class PopularMoviesPage extends StatefulWidget {
   @override
@@ -8,10 +9,13 @@ class PopularMoviesPage extends StatefulWidget {
   }
 }
 
-class PopularMoviesWidget extends State<PopularMoviesPage> {
+class PopularMoviesWidget extends State<PopularMoviesPage> implements PopularMoviesView{
+
+  PopularMoviesPresenter _presenter;
 
   @override
   void initState() {
+    _presenter = new PopularMoviesPresenter(this);
     super.initState();
   }
 
