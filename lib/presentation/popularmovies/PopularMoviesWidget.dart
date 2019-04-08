@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:logopeds_movies/pojo/Movie.dart';
 import 'package:logopeds_movies/presentation/popularmovies/PopularMoviesPresenter.dart';
 import 'package:logopeds_movies/presentation/popularmovies/PopularMoviesView.dart';
 
@@ -9,8 +10,8 @@ class PopularMoviesPage extends StatefulWidget {
   }
 }
 
-class PopularMoviesWidget extends State<PopularMoviesPage> implements PopularMoviesView{
-
+class PopularMoviesWidget extends State<PopularMoviesPage>
+    implements PopularMoviesView {
   PopularMoviesPresenter _presenter;
 
   @override
@@ -27,24 +28,40 @@ class PopularMoviesWidget extends State<PopularMoviesPage> implements PopularMov
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        bottomNavigationBar: new Theme(
-            data: Theme.of(context).copyWith(
-                // sets the background color of the `BottomNavigationBar`
-                canvasColor: Colors.white,
-                textTheme: Theme.of(context)
-                    .textTheme
-                    .copyWith(caption: new TextStyle(color: Colors.black))),
-            child: BottomNavigationBar(
-              currentIndex: 1,
-              items: [
-                BottomNavigationBarItem(
-                    title: Text("test"), icon: Icon(Icons.add)),
-                BottomNavigationBarItem(
-                    title: Text("test"), icon: Icon(Icons.add))
-              ],
-              type: BottomNavigationBarType.fixed,
-              fixedColor: Colors.redAccent,
-            )));
+      bottomNavigationBar: new Theme(
+          data: Theme.of(context).copyWith(
+              // sets the background color of the `BottomNavigationBar`
+              canvasColor: Colors.white,
+              textTheme: Theme.of(context)
+                  .textTheme
+                  .copyWith(caption: new TextStyle(color: Colors.black))),
+          child: BottomNavigationBar(
+            currentIndex: 1,
+            items: [
+              BottomNavigationBarItem(
+                  title: Text("test"), icon: Icon(Icons.add)),
+              BottomNavigationBarItem(
+                  title: Text("test"), icon: Icon(Icons.add))
+            ],
+            type: BottomNavigationBarType.fixed,
+            fixedColor: Colors.redAccent,
+          )),
+      body: ListView.builder(
+          itemCount: _presenter.getMovies().length,
+          itemBuilder: (context, index) {
+        if (_presenter.getMovies().isNotEmpty) {
+          return ListTile(
+            title: Text(_presenter.getMovies()[index].title),
+          );
+        }
+        ;
+      }),
+    );
+  }
+
+  @override
+  void onMoviesLoaded(List<Movie> movies) {
+    setState(() {});
   }
 }
 

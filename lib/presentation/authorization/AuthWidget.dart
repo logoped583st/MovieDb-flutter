@@ -39,7 +39,6 @@ class Authorization extends State<MyHomePage> implements AuthView {
   void dispose() {
     _passwordFocus.dispose();
     _emailFocus.dispose();
-    _presenter.presenterDestroy();
     _loginTextController.dispose();
     _passwordTextController.dispose();
     super.dispose();

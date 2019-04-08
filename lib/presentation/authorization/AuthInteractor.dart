@@ -1,20 +1,14 @@
-import '../../MVP/MVPInteractor.dart';
-import 'AuthPresenter.dart';
-import 'AuthIInteractor.dart';
-import '../../pojo/AuthResponse.dart';
-import '../../pojo/SesionResponse.dart';
-import '../../networking/errors/Errors.dart';
-
+import 'package:logopeds_movies/MVP/MVPInteractor.dart';
 import 'package:logopeds_movies/networking/repository/AuthApi.dart';
+import 'package:logopeds_movies/pojo/AuthResponse.dart';
+import 'package:logopeds_movies/pojo/SesionResponse.dart';
+import 'package:logopeds_movies/presentation/authorization/AuthIInteractor.dart';
 
 class AuthInteractor extends MVPInteractor {
-  AuthIInteractor _interactor;
-  AuthRepository _authRep;
+  final AuthIInteractor _interactor;
+  final AuthRepository _authRep = new Auth();
 
-  AuthInteractor(AuthPresenter presenter) : super(presenter) {
-    _interactor = presenter;
-    _authRep = new Auth();
-  }
+  AuthInteractor(this._interactor) : super(_interactor);
 
   void loginWithLogin(String login, String password) async {
     try {
