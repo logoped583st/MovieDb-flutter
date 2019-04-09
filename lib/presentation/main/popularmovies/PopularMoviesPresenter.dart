@@ -1,7 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:logopeds_movies/MVP/MVPPresenter.dart';
-import 'package:logopeds_movies/networking/repository/PopularMoviesApi.dart';
-import 'package:logopeds_movies/pojo/BaseResponse.dart';
 import 'package:logopeds_movies/pojo/Movie.dart';
 
 import 'PopularMoviesIInteractor.dart';
@@ -24,9 +22,14 @@ class PopularMoviesPresenter
     return PopularMoviesInteractor(this);
   }
 
+
+
+
   @override
   void getPopularMovies(List<Movie> movies) {
     _movies.addAll(movies);
+    debugPrint(_movies[0].poster);
     getView().onMoviesLoaded(_movies);
   }
+
 }

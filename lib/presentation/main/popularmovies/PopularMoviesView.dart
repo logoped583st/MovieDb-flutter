@@ -1,6 +1,6 @@
+import 'package:logopeds_movies/MVP/MVPIView.dart';
 import 'package:logopeds_movies/pojo/Movie.dart';
 
-import '../../MVP/MVPIView.dart';
 
 abstract class PopularMoviesView implements MVPIView {
 

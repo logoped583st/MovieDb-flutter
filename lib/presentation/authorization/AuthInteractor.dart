@@ -4,8 +4,8 @@ import 'package:logopeds_movies/pojo/AuthResponse.dart';
 import 'package:logopeds_movies/pojo/SesionResponse.dart';
 import 'package:logopeds_movies/presentation/authorization/AuthIInteractor.dart';
 
-class AuthInteractor extends MVPInteractor {
-  final AuthIInteractor _interactor;
+class AuthInteractor extends MVPInteractor<AuthIInteractor> {
+  AuthIInteractor _interactor;
   final AuthRepository _authRep = new Auth();
 
   AuthInteractor(this._interactor) : super(_interactor);
@@ -20,9 +20,15 @@ class AuthInteractor extends MVPInteractor {
   }
 
   void guestLogin() async {
+
     try {
       SessionResponse sessionResponse = await _authRep.createGuestSession();
       _interactor.guestSessionSuccess(sessionResponse);
     } catch (error) {}
+  }
+
+  @override
+  void test() {
+    _interactor = null;
   }
 }

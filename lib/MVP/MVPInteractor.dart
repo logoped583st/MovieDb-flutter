@@ -6,8 +6,14 @@ abstract class MVPInteractor <T extends MVPIInteractor>{
 
     T presenter() => _interactor;
 
-    MVPInteractor(T presenter){
+    MVPInteractor(T presenter) {
       _interactor = presenter;
     }
+
+    void interactorDestroy(){
+      _interactor = null;
+    }
+
+    void test();
 
 }

@@ -1,14 +1,17 @@
-import 'package:logopeds_movies/MVP/MVPIInteractor.dart';
+import 'package:logopeds_movies/MVP/MVPInteractor.dart';
 import 'package:logopeds_movies/networking/repository/PopularMoviesApi.dart';
 import 'package:logopeds_movies/pojo/BaseResponse.dart';
 import 'package:logopeds_movies/pojo/Movie.dart';
-import 'package:logopeds_movies/presentation/popularmovies/PopularMoviesIInteractor.dart';
+import 'package:logopeds_movies/presentation/main/popularmovies/PopularMoviesIInteractor.dart';
 
-import '../../MVP/MVPInteractor.dart';
-
-class PopularMoviesInteractor extends MVPInteractor {
-  final PopularMoviesIInteractor _interactor;
+class PopularMoviesInteractor extends MVPInteractor<PopularMoviesIInteractor> {
+  PopularMoviesIInteractor _interactor;
   PopularMoviesRepository _moviesRepository = new PopularMovies();
+
+  @override
+  void test() {
+    _interactor = null;
+  }
 
   PopularMoviesInteractor(this._interactor) : super(_interactor);
 

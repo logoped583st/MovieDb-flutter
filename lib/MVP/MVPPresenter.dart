@@ -5,7 +5,7 @@ import 'MVPInteractor.dart';
 abstract class MVPPresenter<V extends MVPIView, T extends MVPInteractor>
     implements MVPIInteractor {
 
-  final V _baseView;
+  V _baseView;
 
   T _interactor;
 
@@ -15,11 +15,22 @@ abstract class MVPPresenter<V extends MVPIView, T extends MVPInteractor>
 
   T createInteractor();
 
+  @override
   void presenterDestroy() {
-    _interactor = null;
+    getInteractor().interactorDestroy();
+    _baseView = null;
   }
 
-  T getInteractor() => _interactor;
+  T getInteractor() {
+    if (_interactor != null) {
+      return _interactor;
+    } else {
+      createInteractor();
+      return _interactor;
+    }
+  }
+
 
   V getView() => _baseView;
+
 }

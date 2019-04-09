@@ -1,33 +1,28 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:logopeds_movies/pojo/Movie.dart';
-import 'package:logopeds_movies/presentation/popularmovies/PopularMoviesPresenter.dart';
-import 'package:logopeds_movies/presentation/popularmovies/PopularMoviesView.dart';
+import 'package:logopeds_movies/presentation/authorization/AuthWidget.dart';
+import 'package:logopeds_movies/presentation/main/popularmovies/PopularMoviesWidget.dart';
 
-class PopularMoviesPage extends StatefulWidget {
+class MainScreen extends StatefulWidget {
   @override
-  PopularMoviesWidget createState() {
-    return new PopularMoviesWidget();
+  MainScreenNavigator createState() {
+    return new MainScreenNavigator();
   }
 }
 
-class PopularMoviesWidget extends State<PopularMoviesPage>
-    implements PopularMoviesView {
-  PopularMoviesPresenter _presenter;
+class MainScreenNavigator extends State<MainScreen> {
+  final List<Widget> _children = [
+    PopularMoviesPage(),
+    MyHomePage(),
+  ];
 
-  @override
-  void initState() {
-    _presenter = new PopularMoviesPresenter(this);
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
+  int _tabSelected = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
+      body: _children[_tabSelected],
       bottomNavigationBar: new Theme(
           data: Theme.of(context).copyWith(
               // sets the background color of the `BottomNavigationBar`
@@ -36,7 +31,8 @@ class PopularMoviesWidget extends State<PopularMoviesPage>
                   .textTheme
                   .copyWith(caption: new TextStyle(color: Colors.black))),
           child: BottomNavigationBar(
-            currentIndex: 1,
+            onTap: onTabTapped,
+            currentIndex: _tabSelected,
             items: [
               BottomNavigationBarItem(
                   title: Text("test"), icon: Icon(Icons.add)),
@@ -46,22 +42,14 @@ class PopularMoviesWidget extends State<PopularMoviesPage>
             type: BottomNavigationBarType.fixed,
             fixedColor: Colors.redAccent,
           )),
-      body: ListView.builder(
-          itemCount: _presenter.getMovies().length,
-          itemBuilder: (context, index) {
-        if (_presenter.getMovies().isNotEmpty) {
-          return ListTile(
-            title: Text(_presenter.getMovies()[index].title),
-          );
-        }
-        ;
-      }),
     );
   }
 
-  @override
-  void onMoviesLoaded(List<Movie> movies) {
-    setState(() {});
+  void onTabTapped(int index) {
+    setState(() {
+      _tabSelected = index;
+      debugPrint("TAB: $_tabSelected");
+    });
   }
 }
 

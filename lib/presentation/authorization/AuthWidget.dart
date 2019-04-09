@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:logopeds_movies/presentation/CustomProgress.dart';
-import 'package:logopeds_movies/presentation/popularmovies/PopularMoviesWidget.dart';
+import 'package:logopeds_movies/presentation/main/MainScreenNavigator.dart';
+import 'package:logopeds_movies/presentation/main/popularmovies/PopularMoviesWidget.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'AuthPresenter.dart';
 import 'AuthView.dart';
@@ -41,6 +42,8 @@ class Authorization extends State<MyHomePage> implements AuthView {
     _emailFocus.dispose();
     _loginTextController.dispose();
     _passwordTextController.dispose();
+    _presenter.presenterDestroy();
+    _presenter = null;
     super.dispose();
   }
 
@@ -115,7 +118,9 @@ class Authorization extends State<MyHomePage> implements AuthView {
             context: context,
             builder: (BuildContext context) {
               return WillPopScope(
-                  child: Center(child: CustomProgress()), onWillPop: () {},);
+                child: Center(child: CustomProgress()),
+                onWillPop: () {},
+              );
             });
       },
       padding: EdgeInsets.all(12),
@@ -154,7 +159,7 @@ class Authorization extends State<MyHomePage> implements AuthView {
   void authSuccess() {
     Navigator.pop(context);
     Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => PopularMoviesPage()));
+        context, MaterialPageRoute(builder: (context) => MainScreen()));
   }
 
   @override
