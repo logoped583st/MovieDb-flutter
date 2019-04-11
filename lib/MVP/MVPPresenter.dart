@@ -1,9 +1,18 @@
+import 'package:async/async.dart';
+
 import 'MVPIInteractor.dart';
 import 'MVPIView.dart';
 import 'MVPInteractor.dart';
 
 abstract class MVPPresenter<V extends MVPIView, T extends MVPInteractor>
     implements MVPIInteractor {
+  Map<CancelableOperation, CancelableOperation> _map = {};
+
+  void addToCancelable<K>(Future<K> future) {
+    CancelableOperation cancelableOperation =
+        CancelableOperation.fromFuture(future);
+    _map.addAll({cancelableOperation: cancelableOperation});
+  }
 
   V _baseView;
 
@@ -17,20 +26,14 @@ abstract class MVPPresenter<V extends MVPIView, T extends MVPInteractor>
 
   @override
   void presenterDestroy() {
-    getInteractor().interactorDestroy();
     _baseView = null;
+    _interactor = null;
+    _map.forEach((key, value) {
+      value.cancel();
+    });
   }
 
-  T getInteractor() {
-    if (_interactor != null) {
-      return _interactor;
-    } else {
-      createInteractor();
-      return _interactor;
-    }
-  }
-
+  T getInteractor() => _interactor;
 
   V getView() => _baseView;
-
 }

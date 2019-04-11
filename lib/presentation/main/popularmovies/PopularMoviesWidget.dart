@@ -14,27 +14,28 @@ class PopularMoviesPage extends StatefulWidget {
 class PopularMoviesWidget extends State<PopularMoviesPage>
     implements PopularMoviesView {
   PopularMoviesPresenter _presenter;
+  final ScrollController _scrollController = new ScrollController();
 
   @override
   void initState() {
     debugPrint("INIT");
     _presenter = new PopularMoviesPresenter(this);
-
+    _presenter.listenScroll(_scrollController);
     super.initState();
   }
 
   @override
   void dispose() {
-//    _presenter.presenterDestroy();
-    _presenter = null;
-
     super.dispose();
-
+    _scrollController.dispose();
+    _presenter.presenterDestroy();
+    _presenter = null;
   }
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      controller: _scrollController,
         padding: EdgeInsets.all(8),
         itemCount: _presenter.getMovies().length,
         itemBuilder: (context, index) {
@@ -63,12 +64,8 @@ class PopularMoviesWidget extends State<PopularMoviesPage>
         });
   }
 
-
   @override
   void onMoviesLoaded(List<Movie> movies) {
-    if(_presenter!=null){
-      setState(() {});
-
-    }
+    setState(() {});
   }
 }

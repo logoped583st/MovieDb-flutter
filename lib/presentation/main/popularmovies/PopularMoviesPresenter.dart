@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
 import 'package:logopeds_movies/MVP/MVPPresenter.dart';
 import 'package:logopeds_movies/pojo/Movie.dart';
 
@@ -13,8 +13,26 @@ class PopularMoviesPresenter
 
   List<Movie> getMovies() => _movies;
 
+  bool isLoading = true;
+
   PopularMoviesPresenter(PopularMoviesView baseView) : super(baseView) {
-    getInteractor().getPopularMovies();
+    requestMovies();
+  }
+
+  void listenScroll(ScrollController scrollController) {
+    scrollController.addListener(() {
+      debugPrint(" ${scrollController.position.pixels}  ${scrollController.position.maxScrollExtent}");
+      if (scrollController.offset  > scrollController.position.maxScrollExtent%2) {
+        if (!isLoading) {
+          isLoading = !isLoading;
+          requestMovies();
+        }
+      }
+    });
+  }
+
+  void requestMovies() {
+    addToCancelable(getInteractor().getPopularMovies());
   }
 
   @override
@@ -22,14 +40,10 @@ class PopularMoviesPresenter
     return PopularMoviesInteractor(this);
   }
 
-
-
-
   @override
   void getPopularMovies(List<Movie> movies) {
     _movies.addAll(movies);
-    debugPrint(_movies[0].poster);
+    isLoading = false;
     getView().onMoviesLoaded(_movies);
   }
-
 }
