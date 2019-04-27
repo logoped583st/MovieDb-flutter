@@ -4,7 +4,7 @@ import 'package:logopeds_movies/presentation/main/movieitem/MovieItemIInteractor
 import 'package:logopeds_movies/presentation/main/movieitem/MovieItemPresenter.dart';
 
 class MovieItemInteractor extends MVPInteractor<MovieItemIInteractor> {
-  PopularMoviesRepository _moviesRepository = new PopularMovies();
+  MoviesRepository _moviesRepository = new PopularMovies();
 
   MovieItemInteractor(MovieItemPresenter presenter) : super(presenter);
 }

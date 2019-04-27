@@ -10,7 +10,7 @@ class MovieItemPage extends StatefulWidget {
 }
 
 class MovieItemWidget extends State<MovieItemPage>
-    implements PopularMoviesView {
+    implements MoviesView {
   @override
   void initState() {
     super.initState();
