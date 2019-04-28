@@ -44,7 +44,15 @@ class Movie extends Deserialize {
         popularity: json['popularity'],
         voteCount: json['vote_count'],
         video: json['video'],
-        voteAverage: json['vote_average'].toDouble());
+        /*voteAverage: json['vote_average']!=null?.toDouble()*/);
+  }
+
+  Map<String, dynamic> movieToJson() {
+    return {
+      "id": this.id,
+      "poster_path": this.poster,
+      "overview": this.overview,
+      "original_title": this.title};
   }
 
   @override

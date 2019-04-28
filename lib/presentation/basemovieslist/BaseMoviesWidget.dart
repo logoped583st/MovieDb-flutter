@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:logopeds_movies/pojo/Movie.dart';
 import 'package:logopeds_movies/presentation/basemovieslist/BaseMoviesPresenter.dart';
-import 'package:logopeds_movies/presentation/main/popularmovies/PopularMoviesView.dart';
+import 'package:logopeds_movies/presentation/basemovieslist/MoviesView.dart';
+import 'package:logopeds_movies/presentation/main/movieitem/MovieItemWidget.dart';
 import 'package:logopeds_movies/utils/ImageHelper.dart';
 
 abstract class BaseMoviesPage extends StatefulWidget {}
@@ -34,34 +35,53 @@ abstract class BaseMoviesWidget extends State<BaseMoviesPage>
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-        controller: _scrollController,
-        padding: EdgeInsets.all(8),
-        itemCount: _presenter.getMovies().length,
-        itemBuilder: (context, index) {
-          if (_presenter.getMovies().isNotEmpty) {
-            return Card(
-                clipBehavior: Clip.hardEdge,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8)),
-                elevation: 8,
-                child: ListTile(
-                    contentPadding: EdgeInsets.all(8),
-                    dense: true,
-                    onTap: () {},
-                    subtitle: Text(_presenter.getMovies()[index].overview),
-                    title: Text(_presenter.getMovies()[index].title),
-                    leading: new Container(
-                        width: 68,
-                        height: 68,
-                        decoration: new BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: new DecorationImage(
-                                fit: BoxFit.fill,
-                                image: new NetworkImage(getImageUrl(
-                                    _presenter.getMovies()[index].poster)))))));
-          }
-        });
+    return Stack(children: <Widget>[
+      _presenter.isListLoading() ? LinearProgressIndicator() : Container(),
+      ListView.builder(
+          controller: _scrollController,
+          padding: EdgeInsets.all(8),
+          itemCount: _presenter.getMovies().length,
+          itemBuilder: (context, index) {
+            if (_presenter.getMovies().isNotEmpty) {
+              Movie item = _presenter.getMovies()[index];
+
+              return Material(
+                  color: Colors.transparent,
+                  child: Hero(
+                      tag: item,
+                      child: Card(
+                          clipBehavior: Clip.hardEdge,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8)),
+                          elevation: 8,
+                          child: ListTile(
+                              contentPadding: EdgeInsets.all(8),
+                              dense: false,
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            MovieItemPage(item)));
+                              },
+                              subtitle: Text(item.overview),
+                              title: Text(item.title),
+                              leading: Hero(
+                                  transitionOnUserGestures: true,
+                                  tag: item.poster,
+                                  child: Container(
+                                      width: 68,
+                                      height: 68,
+                                      decoration: new BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          image: new DecorationImage(
+                                              fit: BoxFit.fill,
+                                              image: new NetworkImage(
+                                                  getImageUrl(
+                                                      item.poster))))))))));
+            }
+          })
+    ]);
   }
 
   @override

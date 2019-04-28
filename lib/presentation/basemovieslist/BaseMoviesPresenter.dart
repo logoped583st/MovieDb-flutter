@@ -3,7 +3,7 @@ import 'package:logopeds_movies/MVP/MVPPresenter.dart';
 import 'package:logopeds_movies/pojo/Movie.dart';
 import 'package:logopeds_movies/presentation/basemovieslist/BaseMoviesIInteractor.dart';
 import 'package:logopeds_movies/presentation/basemovieslist/BaseMoviesInteractor.dart';
-import 'package:logopeds_movies/presentation/main/popularmovies/PopularMoviesView.dart';
+import 'package:logopeds_movies/presentation/basemovieslist/MoviesView.dart';
 
 abstract class BaseMoviesPresenter
     extends MVPPresenter<MoviesView, BaseMoviesInteractor>
@@ -30,6 +30,10 @@ abstract class BaseMoviesPresenter
         }
       }
     });
+  }
+
+  bool isListLoading() {
+    return isLoading && _movies.isEmpty;
   }
 
   void requestMovies() {

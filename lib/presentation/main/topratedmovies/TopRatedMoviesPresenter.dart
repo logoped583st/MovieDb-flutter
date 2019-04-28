@@ -1,12 +1,11 @@
 import 'package:logopeds_movies/presentation/basemovieslist/BaseMoviesInteractor.dart';
 import 'package:logopeds_movies/presentation/basemovieslist/BaseMoviesPresenter.dart';
 import 'package:logopeds_movies/presentation/basemovieslist/MoviesView.dart';
-import 'package:logopeds_movies/presentation/main/popularmovies/PopularMoviesInteractor.dart';
+import 'package:logopeds_movies/presentation/main/topratedmovies/TopRatedMoviesInteractor.dart';
 
+class TopRatedMoviesPresenter extends BaseMoviesPresenter {
 
-class PopularMoviesPresenter extends BaseMoviesPresenter {
-
-  PopularMoviesPresenter(MoviesView baseView) : super(baseView) {
+  TopRatedMoviesPresenter(MoviesView baseView) : super(baseView) {
     requestMovies();
   }
 
@@ -16,6 +15,6 @@ class PopularMoviesPresenter extends BaseMoviesPresenter {
 
   @override
   BaseMoviesInteractor createInteractor() {
-    return PopularMoviesInteractor(this);
+    return TopRatedMoviesInteractor(this);
   }
 }

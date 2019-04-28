@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:logopeds_movies/presentation/authorization/AuthWidget.dart';
 import 'package:logopeds_movies/presentation/main/popularmovies/PopularMoviesWidget.dart';
+import 'package:logopeds_movies/presentation/main/topratedmovies/TopRatedMoviesWidget.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -13,7 +13,12 @@ class MainScreen extends StatefulWidget {
 class MainScreenNavigator extends State<MainScreen> {
   final List<Widget> _children = [
     PopularMoviesPage(),
-    MyHomePage(),
+    TopRatedMoviesPage(),
+  ];
+
+  final List<String> _titles = [
+    "Popular",
+    "Top Rated",
   ];
 
   int _tabSelected = 0;
@@ -21,11 +26,12 @@ class MainScreenNavigator extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text(_titles[_tabSelected]),
+      ),
       body: _children[_tabSelected],
       bottomNavigationBar: new Theme(
           data: Theme.of(context).copyWith(
-              // sets the background color of the `BottomNavigationBar`
               canvasColor: Colors.white,
               textTheme: Theme.of(context)
                   .textTheme
@@ -35,9 +41,9 @@ class MainScreenNavigator extends State<MainScreen> {
             currentIndex: _tabSelected,
             items: [
               BottomNavigationBarItem(
-                  title: Text("test"), icon: Icon(Icons.add)),
+                  title: Text("Popular"), icon: Icon(Icons.cake)),
               BottomNavigationBarItem(
-                  title: Text("test"), icon: Icon(Icons.add))
+                  title: Text("Top Rated"), icon: Icon(Icons.grade))
             ],
             type: BottomNavigationBarType.fixed,
             fixedColor: Colors.redAccent,
@@ -50,13 +56,5 @@ class MainScreenNavigator extends State<MainScreen> {
       _tabSelected = index;
       debugPrint("TAB: $_tabSelected");
     });
-  }
-}
-
-class MyBehavior extends ScrollBehavior {
-  @override
-  Widget buildViewportChrome(
-      BuildContext context, Widget child, AxisDirection axisDirection) {
-    return child;
   }
 }
