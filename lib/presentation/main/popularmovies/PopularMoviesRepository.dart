@@ -3,25 +3,23 @@ import 'dart:async';
 import 'package:logopeds_movies/pojo/BaseResponse.dart';
 import 'package:logopeds_movies/pojo/Movie.dart';
 import 'package:logopeds_movies/presentation/basemovieslist/BaseMoviesRepository.dart';
-import 'package:logopeds_movies/presentation/main/topratedmovies/TopRatedMoviesPresenter.dart';
+import 'package:logopeds_movies/presentation/main/popularmovies/PopularMoviesPresenter.dart';
 
-
-class TopRatedMoviesRepository extends BaseMoviesRepository {
-  TopRatedMoviesRepository(TopRatedMoviesPresenter presenter)
-      : super(presenter);
+class PopularMoviesRepository extends BaseMoviesRepository {
+  PopularMoviesRepository(PopularMoviesPresenter presenter) : super(presenter);
 
   @override
   Future<BaseResponse<Movie>> movieRequest() {
-    return moviesApi.getTopRatedMovies(getPage().toString());
+    return moviesApi.getPopularMovies(getPage().toString());
   }
 
   @override
   Future<List<Movie>> getMoviesFromDb() {
-    return movieDao.getTopRatedMovies();
+    return movieDao.getPopularMovies();
   }
 
   @override
   Future<void> insertMovies(List<Movie> movies) {
-    return movieDao.insertTopRatedMovies(movies);
+    return movieDao.insertPopularMovies(movies);
   }
 }

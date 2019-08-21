@@ -1,21 +1,16 @@
-import 'package:logopeds_movies/presentation/basemovieslist/BaseMoviesInteractor.dart';
+import 'package:logopeds_movies/presentation/basemovieslist/BaseMoviesRepository.dart';
 import 'package:logopeds_movies/presentation/basemovieslist/BaseMoviesPresenter.dart';
 import 'package:logopeds_movies/presentation/basemovieslist/MoviesView.dart';
-import 'package:logopeds_movies/presentation/main/popularmovies/PopularMoviesInteractor.dart';
+import 'package:logopeds_movies/presentation/main/popularmovies/PopularMoviesRepository.dart';
 
 
 class PopularMoviesPresenter extends BaseMoviesPresenter {
 
-  PopularMoviesPresenter(MoviesView baseView) : super(baseView) {
-    requestMovies();
-  }
-
-  void requestMovies() {
-    addToCancelable(getInteractor().loadMovies());
-  }
+  PopularMoviesPresenter(MoviesView baseView) : super(baseView);
 
   @override
-  BaseMoviesInteractor createInteractor() {
-    return PopularMoviesInteractor(this);
+  BaseMoviesRepository createRepository() {
+    return PopularMoviesRepository(this);
   }
+
 }

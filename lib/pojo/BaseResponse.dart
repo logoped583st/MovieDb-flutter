@@ -20,5 +20,4 @@ class BaseResponse<T> {
         totalPages: json['total_pages'],
         result: result);
   }
-
 }

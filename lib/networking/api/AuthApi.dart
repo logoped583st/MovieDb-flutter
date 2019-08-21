@@ -4,7 +4,7 @@ import '../../pojo/SesionResponse.dart';
 import 'dart:async';
 import 'dart:convert';
 
-class Auth implements AuthRepository {
+class AuthApi implements IAuthApi {
   Future<RequestToken> getRequestToken() async {
     final response = await baseGet("/authentication/token/new");
     return RequestToken.fromJson(json.decode(response.body));
@@ -31,7 +31,7 @@ class Auth implements AuthRepository {
   }
 }
 
-abstract class AuthRepository {
+abstract class IAuthApi {
   Future<RequestToken> getRequestToken();
 
   Future<SessionResponse> createGuestSession();

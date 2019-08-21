@@ -1,7 +1,7 @@
 import 'dart:async';
+import 'dart:core';
 import 'dart:io';
 
-import 'package:logopeds_movies/pojo/Movie.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
@@ -21,32 +21,25 @@ class DBProvider {
 
   initDB() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentsDirectory.path, "MOVIEDB.db");
+    String path = join(documentsDirectory.path, "qwe123.db");
     return await openDatabase(path, version: 1, onOpen: (db) {},
         onCreate: (Database db, int version) async {
-      await db.execute("CREATE TABLE IF NOT EXISTS MOVIES ("
+      await db.execute(createMovieTable(POPULAR_MOVIES_TABLE));
+      await db.execute(createMovieTable(TOP_RATED_MOVIES_TABLE));
+    });
+  }
+}
+
+String createMovieTable(String tableName) {
+  return "CREATE TABLE IF NOT EXISTS " +
+      tableName +
+      "("
           "id INTEGER PRIMARY KEY,"
           "poster_path TEXT,"
           "overview TEXT,"
           "original_title TEXT,"
-          "type TEXT,"
-          ")");
-    });
-  }
-
-  void insertMovies(List<Movie> movies) async {
-    final Database db = await database;
-    movies.forEach((f) {
-      db.insert("MOVIES", f.movieToJson(),
-          conflictAlgorithm: ConflictAlgorithm.replace);
-    });
-  }
-
-  Future<List<Movie>> getAllClients() async {
-    final db = await database;
-    var res = await db.query("MOVIES");
-    List<Movie> list =
-        res.isNotEmpty ? res.map((c) => Movie.fromJson(c)).toList() : [];
-    return list;
-  }
+          "type TEXT)";
 }
+
+const String POPULAR_MOVIES_TABLE = "POPULAR_MOVIES";
+const String TOP_RATED_MOVIES_TABLE = "TOP_RATED_MOVIES";

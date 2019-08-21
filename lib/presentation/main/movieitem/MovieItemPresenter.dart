@@ -15,7 +15,7 @@ class MovieItemPresenter
   MovieItemPresenter(MovieItemView baseView) : super(baseView) {}
 
   @override
-  MovieItemInteractor createInteractor() {
+  MovieItemInteractor createRepository() {
     return MovieItemInteractor(this);
   }
 }

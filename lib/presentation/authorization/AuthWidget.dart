@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:logopeds_movies/presentation/CustomProgress.dart';
+import 'package:logopeds_movies/statelesswindgets/CustomProgress.dart';
 import 'package:logopeds_movies/presentation/main/MainScreenNavigator.dart';
 import 'package:logopeds_movies/presentation/main/popularmovies/PopularMoviesWidget.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -132,9 +132,8 @@ class Authorization extends State<MyHomePage> implements AuthView {
     return Scaffold(
         appBar: AppBar(),
         body: Center(
-          child: ScrollConfiguration(
-            behavior: MyBehavior(),
             child: ListView(
+              physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               padding: EdgeInsets.only(left: 24.0, right: 24.0),
               children: <Widget>[
@@ -149,7 +148,7 @@ class Authorization extends State<MyHomePage> implements AuthView {
               ],
             ),
           ),
-        ));
+    );
   }
 
   @override

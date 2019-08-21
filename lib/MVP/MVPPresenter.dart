@@ -1,11 +1,11 @@
 import 'package:async/async.dart';
 
-import 'MVPIInteractor.dart';
+import 'MVPIRepository.dart';
 import 'MVPIView.dart';
-import 'MVPInteractor.dart';
+import 'MVPRepository.dart';
 
-abstract class MVPPresenter<V extends MVPIView, T extends MVPInteractor>
-    implements MVPIInteractor {
+abstract class MVPPresenter<V extends MVPIView, T extends MVPRepository>
+    implements MVPIRepository {
   Map<CancelableOperation, CancelableOperation> _map = {};
 
   void addToCancelable<K>(Future<K> future) {
@@ -16,24 +16,24 @@ abstract class MVPPresenter<V extends MVPIView, T extends MVPInteractor>
 
   V _baseView;
 
-  T _interactor;
+  T repository;
 
   MVPPresenter(this._baseView) {
-    _interactor = createInteractor();
+    repository = createRepository();
   }
 
-  T createInteractor();
+  T createRepository();
 
   @override
   void presenterDestroy() {
     _baseView = null;
-    _interactor = null;
+    repository = null;
     _map.forEach((key, value) {
       value.cancel();
     });
   }
 
-  T getInteractor() => _interactor;
+  T getRepository() => repository;
 
   V getView() => _baseView;
 }

@@ -5,7 +5,7 @@ import 'package:logopeds_movies/pojo/BaseResponse.dart';
 import 'package:logopeds_movies/pojo/Movie.dart';
 import 'package:logopeds_movies/utils/BaseHttp.dart';
 
-class PopularMovies implements MoviesRepository {
+class MoviesApi implements IMoviesApi {
   @override
   Future<BaseResponse<Movie>> getPopularMovies(String page) async {
     final response = await baseGet("/movie/popular", query: {"page": page});
@@ -25,7 +25,7 @@ class PopularMovies implements MoviesRepository {
   }
 }
 
-abstract class MoviesRepository {
+abstract class IMoviesApi {
   Future<BaseResponse<Movie>> getPopularMovies(String page);
 
   Future<BaseResponse<Movie>> getTopRatedMovies(String page);
